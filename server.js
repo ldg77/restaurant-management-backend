@@ -5,7 +5,9 @@ import mongoose from "mongoose";
 import morgan from "morgan";
 import cors from "cors";
 import userRouter from "./routes/usersRoute.js";
-
+import { errorMiddleware } from "./middleware/error.js";
+import groupRouter from "./routes/groupRoute.js";
+import cookieParser from "cookie-parser";
 const PORT = process.env.PORT || 4000;
 const URI = process.env.URI || "mongodb://localhost:27017/test";
 // initialize express
@@ -13,12 +15,21 @@ const app = express();
 
 // set middleware
 app.use(morgan("dev"));
-app.use(cors());
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // set routes
 app.use("/users", userRouter);
+app.use("/groups", groupRouter);
+
 // set mongoose
+app.use(errorMiddleware);
 mongoose.connect(URI, () => {
   console.log("DB-Connected");
   (err) => {
