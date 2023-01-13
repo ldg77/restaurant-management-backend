@@ -24,6 +24,7 @@ app.use(
   })
 );
 app.use(express.json());
+app.use("/uploads", express.static("uploads"));
 
 // set routes
 app.use("/users", userRouter);

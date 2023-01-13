@@ -53,8 +53,9 @@ export const loginOne = async (req, res, next) => {
   try {
     res
       .status(200)
-      .cookie("loginCookie", req.body.token, {
+      .cookie("token", req.body.token, {
         httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24,
       })
       .send({ message: req.body.approved });
   } catch (error) {
@@ -63,9 +64,17 @@ export const loginOne = async (req, res, next) => {
 };
 export const checklogin = (req, res, next) => {
   try {
-    const token = req.cookies.loginCookie;
+    const token = req.cookies.token;
     const tokenDecoded = jwt.verify(token, process.env.JWT);
     res.status(200).send({ aprooved: true, isAdmin: tokenDecoded.admin });
+  } catch (error) {
+    res.status(401).end();
+  }
+};
+export const logout = (req, res, next) => {
+  try {
+    res.clearCookie("token");
+    res.status(200).send({ aprooved: false });
   } catch (error) {
     res.status(401).end();
   }

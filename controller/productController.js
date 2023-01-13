@@ -1,5 +1,6 @@
 import Product from "../models/Product.js";
-
+import * as dotenv from "dotenv";
+dotenv.config();
 export const getAll = async (req, res, next) => {
   try {
     res.status(200).send(await Product.find({}, { __v: 0 }));
@@ -17,7 +18,12 @@ export const getOne = async (req, res, next) => {
 };
 export const postOne = async (req, res, next) => {
   try {
-    res.status(201).send(await Product.create(req.body));
+    const product = await Product.create(req.body);
+    res.status(201).send(
+      await Product.findByIdAndUpdate(product._id, {
+        avatar: `${process.env.HOST}:${process.env.PORT}/${req.file.path}`,
+      })
+    );
   } catch (error) {
     next({ message: error });
   }
@@ -35,7 +41,15 @@ export const updateOne = async (req, res, next) => {
     console.log(product);
     res
       .status(201)
-      .send(await Product.updateOne({ _id: product._id }, { ...req.body }));
+      .send(
+        await Product.updateOne(
+          { _id: product._id },
+          {
+            ...req.body,
+            avatar: `${process.env.HOST}:${process.env.PORT}/${req.file.path}`,
+          }
+        )
+      );
   } catch (error) {
     next({ message: error });
   }

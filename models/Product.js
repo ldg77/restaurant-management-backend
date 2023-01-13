@@ -21,7 +21,6 @@ const productSchema = new mongoose.Schema(
     },
     available: {
       type: Boolean,
-      default: true,
     },
   },
   {
