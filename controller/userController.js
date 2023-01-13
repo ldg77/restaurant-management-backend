@@ -12,6 +12,7 @@ export const getAll = async (req, res, next) => {
     next({ message: error });
   }
 };
+
 export const getOne = async (req, res, next) => {
   try {
     res.status(200).send(await User.findById(req.params.id));
@@ -21,9 +22,7 @@ export const getOne = async (req, res, next) => {
 };
 export const postOne = async (req, res, next) => {
   try {
-    console.log(req.body);
     const role = await Group.findById(req.body.role);
-    console.log(role);
     if (role.name === "admin") {
       res.status(201).send(await User.create({ ...req.body, isAdmin: true }));
     }
@@ -35,7 +34,6 @@ export const postOne = async (req, res, next) => {
 export const updateOne = async (req, res, next) => {
   try {
     const user = await User.findById(req.params.id);
-    console.log(user);
     res
       .status(201)
       .send(await User.updateOne({ _id: user._id }, { ...req.body }));

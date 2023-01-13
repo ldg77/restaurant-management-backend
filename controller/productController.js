@@ -1,8 +1,8 @@
-import Group from "../models/Group.js";
+import Product from "../models/Product.js";
 
 export const getAll = async (req, res, next) => {
   try {
-    res.status(200).send(await Group.find({}, { __v: 0 }));
+    res.status(200).send(await Product.find({}, { __v: 0 }));
   } catch (error) {
     next({ message: error });
   }
@@ -10,32 +10,32 @@ export const getAll = async (req, res, next) => {
 
 export const getOne = async (req, res, next) => {
   try {
-    res.status(200).send(await Group.findById(req.params.id));
+    res.status(200).send(await Product.findById(req.params.id));
   } catch (error) {
     next({ message: error });
   }
 };
 export const postOne = async (req, res, next) => {
   try {
-    res.status(201).send(await Group.create(req.body));
+    res.status(201).send(await Product.create(req.body));
   } catch (error) {
     next({ message: error });
   }
 };
 export const deleteOne = async (req, res, next) => {
   try {
-    res.status(200).send(await Group.findByIdAndDelete(req.params.id));
+    res.status(200).send(await Product.findByIdAndDelete(req.params.id));
   } catch (error) {
     next({ message: error });
   }
 };
 export const updateOne = async (req, res, next) => {
   try {
-    const group = await Group.findById(req.params.id);
-    console.log(group);
+    const product = await Product.findById(req.params.id);
+    console.log(product);
     res
       .status(201)
-      .send(await Group.updateOne({ _id: group._id }, { ...req.body }));
+      .send(await Product.updateOne({ _id: product._id }, { ...req.body }));
   } catch (error) {
     next({ message: error });
   }

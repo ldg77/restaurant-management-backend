@@ -4,7 +4,6 @@ const productSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
       unique: true,
     },
     avatar: {
@@ -12,16 +11,13 @@ const productSchema = new mongoose.Schema(
     },
     price: {
       type: Number,
-      required: true,
     },
     description: {
       type: String,
-      required: true,
     },
     category: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Category",
-      required: true,
+      type: String,
+      enum: ["main", "drinks", "salads", "desserts", "starters"],
     },
     available: {
       type: Boolean,
