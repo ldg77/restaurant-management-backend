@@ -18,6 +18,6 @@ userRouter.route("/").get(getAll).post(hashPWD, postOne);
 userRouter.route("/login").post(checkPWD, loginOne);
 userRouter.route("/checklogin").get(checklogin);
 // set routes on param
-userRouter.route("/:id").get(getOne).put(updateOne).delete(deleteOne);
+userRouter.route("/:id").get(getOne).patch(updateOne).delete(deleteOne);
 
 export default userRouter;
