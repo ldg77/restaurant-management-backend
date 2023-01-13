@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import Group from "../models/Group.js";
 import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 dotenv.config();
@@ -20,7 +21,9 @@ export const getOne = async (req, res, next) => {
 };
 export const postOne = async (req, res, next) => {
   try {
+    console.log(req.body);
     const role = await Group.findById(req.body.role);
+    console.log(role);
     if (role.name === "admin") {
       res.status(201).send(await User.create({ ...req.body, isAdmin: true }));
     }
