@@ -18,6 +18,7 @@ export default async (req, res, next) => {
           }
         );
         req.body.token = token;
+
         next();
       }
       next({ message: "Wrong Password" });

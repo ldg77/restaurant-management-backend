@@ -26,7 +26,8 @@ export const postOne = async (req, res, next) => {
     if (role.name === "admin") {
       res.status(201).send(await User.create({ ...req.body, isAdmin: true }));
     }
-    res.status(201).send(await User.create(req.body));
+    await User.create(req.body);
+    res.status(201).send({ message: true });
   } catch (error) {
     next({ message: error });
   }
