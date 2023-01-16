@@ -39,7 +39,7 @@ const restaurantContact = new mongoose.Schema({
   },
 });
 
-const restaurant = new mongoose.Schema(
+const restaurantSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -58,3 +58,5 @@ const restaurant = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+export default mongoose.model("Restaurant", restaurantSchema);

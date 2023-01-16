@@ -9,6 +9,7 @@ import { errorMiddleware } from "./middleware/error.js";
 import groupRouter from "./routes/groupRoute.js";
 import cookieParser from "cookie-parser";
 import productRouter from "./routes/productController.js";
+import restaurantRouter from "./routes/restaurantRoute.js";
 const PORT = process.env.PORT || 4000;
 const URI = process.env.URI || "mongodb://localhost:27017/test";
 // initialize express
@@ -30,6 +31,7 @@ app.use("/uploads", express.static("uploads"));
 app.use("/users", userRouter);
 app.use("/groups", groupRouter);
 app.use("/products", productRouter);
+app.use("/restaurants", restaurantRouter);
 
 // set mongoose
 app.use(errorMiddleware);

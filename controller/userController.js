@@ -62,11 +62,15 @@ export const loginOne = async (req, res, next) => {
     next({ message: error.message });
   }
 };
-export const checklogin = (req, res, next) => {
+export const checklogin = async (req, res, next) => {
   try {
     const token = req.cookies.token;
     const tokenDecoded = jwt.verify(token, process.env.JWT);
-    res.status(200).send({ aprooved: true, isAdmin: tokenDecoded.admin });
+    console.log(tokenDecoded);
+    const loggedUser = await User.findById(tokenDecoded.id);
+    res
+      .status(200)
+      .send({ aprooved: true, isAdmin: tokenDecoded.admin, user: loggedUser });
   } catch (error) {
     res.status(401).end();
   }
