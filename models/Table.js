@@ -7,12 +7,11 @@ const tableSchema = new mongoose.Schema(
       unique: true,
     },
     capacity: {
-      type: Number,
+      type: String,
       required: true,
     },
     available: {
       type: Boolean,
-      default: true,
     },
     bookedFrom: {
       type: Date,

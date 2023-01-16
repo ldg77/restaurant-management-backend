@@ -37,19 +37,17 @@ export const deleteOne = async (req, res, next) => {
 };
 export const updateOne = async (req, res, next) => {
   try {
-    const product = await Product.findById(req.params.id);
-    console.log(product);
+    if (req.file) {
+      res.status(201).send(
+        await Product.findByIdAndUpdate(req.params.id, {
+          ...req.body,
+          avatar: `${process.env.HOST}:${process.env.PORT}/${req.file.path}`,
+        })
+      );
+    }
     res
       .status(201)
-      .send(
-        await Product.updateOne(
-          { _id: product._id },
-          {
-            ...req.body,
-            avatar: `${process.env.HOST}:${process.env.PORT}/${req.file.path}`,
-          }
-        )
-      );
+      .send(await Product.findByIdAndUpdate(req.params.id, { ...req.body }));
   } catch (error) {
     next({ message: error });
   }

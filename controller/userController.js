@@ -34,10 +34,9 @@ export const postOne = async (req, res, next) => {
 };
 export const updateOne = async (req, res, next) => {
   try {
-    const user = await User.findById(req.params.id);
     res
       .status(201)
-      .send(await User.updateOne({ _id: user._id }, { ...req.body }));
+      .send(await User.findByIdAndUpdate(req.params.id, { ...req.body }));
   } catch (error) {
     next({ message: error });
   }
