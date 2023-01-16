@@ -12,6 +12,7 @@ const tableSchema = new mongoose.Schema(
     },
     available: {
       type: Boolean,
+      default: true,
     },
     bookedFrom: {
       type: Date,
@@ -22,4 +23,11 @@ const tableSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-export default mongoose.model("Table", tableSchema);
+
+const Table = mongoose.model("Table", tableSchema);
+
+Table.watch().on("change", (data) => {
+  console.log(data.updateDescription);
+});
+
+export default Table;

@@ -7,7 +7,12 @@ export const getAll = async (req, res, next) => {
   try {
     res
       .status(200)
-      .send(await User.find({}, { password: 0, __v: 0 }).populate("role"));
+      .send(
+        await User.find({}, { password: 0, __v: 0 }).populate([
+          "role",
+          "bookedTable",
+        ])
+      );
   } catch (error) {
     next({ message: error });
   }
@@ -65,7 +70,6 @@ export const checklogin = async (req, res, next) => {
   try {
     const token = req.cookies.token;
     const tokenDecoded = jwt.verify(token, process.env.JWT);
-    console.log(tokenDecoded);
     const loggedUser = await User.findById(tokenDecoded.id);
     res
       .status(200)

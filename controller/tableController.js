@@ -1,4 +1,5 @@
 import Table from "../models/Table.js";
+import User from "../models/User.js";
 export const getAll = async (req, res, next) => {
   try {
     res.status(200).send(await Table.find());
@@ -24,36 +25,44 @@ export const postOne = async (req, res, next) => {
 };
 export const updateOne = async (req, res, next) => {
   try {
-    console.log(req.body);
-    if (req.body.bookedFrom.length && req.body.bookedTill.length) {
+    await User.updateMany(
+      {},
+      { $pull: { bookedTable: { $in: req.params.id } } }
+    );
+
+    if (req.body.bookedFrom && req.body.bookedTill) {
+      await User.updateMany(
+        {},
+        { $pull: { bookedTable: { $in: req.params.id } } }
+      );
+      await User.findByIdAndUpdate(req.body.user, {
+        $push: { bookedTable: req.params.id },
+      });
       res.status(201).send(
-        await Table.updateOne(
-          { _id: req.params.id },
-          {
-            bookedFrom: req.body.bookedFrom,
-            bookedTill: req.body.bookedTill,
-            available: false,
-          }
-        )
+        await Table.findByIdAndUpdate(req.params.id, {
+          ...req.body,
+          available: false,
+        })
+      );
+    } else {
+      res.status(201).send(
+        await Table.findByIdAndUpdate(req.params.id, {
+          bookedFrom: "",
+          bookedTill: "",
+          available: true,
+        })
       );
     }
-
-    res.status(201).send(
-      await Table.updateOne(
-        { _id: req.params.id },
-        {
-          bookedFrom: req.body.bookedFrom,
-          bookedTill: req.body.bookedTill,
-          available: true,
-        }
-      )
-    );
   } catch (error) {
     next({ message: error });
   }
 };
 export const deleteOne = async (req, res, next) => {
   try {
+    await User.updateMany(
+      {},
+      { $pull: { bookedTable: { $in: req.params.id } } }
+    );
     res.status(201).send(await Table.findByIdAndDelete(req.params.id));
   } catch (error) {
     next({ message: error });
