@@ -2,7 +2,6 @@ import User from "../models/User.js";
 import Group from "../models/Group.js";
 import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
-import Table from "../models/Table.js";
 dotenv.config();
 export const getAll = async (req, res, next) => {
   try {
@@ -29,13 +28,13 @@ export const getOne = async (req, res, next) => {
 export const postOne = async (req, res, next) => {
   try {
     const role = await Group.findById(req.body.role);
-    if (role.name === "admin") {
-      res.status(201).send(await User.create({ ...req.body, isAdmin: true }));
-    }
-    await User.create(req.body);
-    res.status(201).send({ message: true });
+    console.log(req.body);
+    res.status(201).send({
+      approved: true,
+      data: await User.create({ ...req.body, isAdmin: role.name === "admin" }),
+    });
   } catch (error) {
-    next({ message: error });
+    next({ message: error.message });
   }
 };
 export const updateOne = async (req, res, next) => {
@@ -49,14 +48,6 @@ export const updateOne = async (req, res, next) => {
 };
 export const deleteOne = async (req, res, next) => {
   try {
-    // await Table.updateMany(
-    //   { user: req.params.id },
-    //   {
-    //     bookedFrom: "",
-    //     bookedTill: "",
-    //     available: true,
-    //   }
-    // );
     res.status(200).send(await User.findByIdAndDelete(req.params.id));
   } catch (error) {
     next({ message: error });
