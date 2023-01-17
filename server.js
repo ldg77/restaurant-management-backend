@@ -26,7 +26,7 @@ app.use(
   })
 );
 app.use(express.json());
-// app.use(express.static("dist"));
+app.use(express.static("dist"));
 app.use("/uploads", express.static("uploads"));
 
 // set routes
