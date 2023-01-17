@@ -2,7 +2,7 @@ import Table from "../models/Table.js";
 import User from "../models/User.js";
 export const getAll = async (req, res, next) => {
   try {
-    res.status(200).send(await Table.find());
+    res.status(200).send(await Table.find().populate("user"));
   } catch (error) {
     next({ message: error });
   }
@@ -31,10 +31,6 @@ export const updateOne = async (req, res, next) => {
     );
 
     if (req.body.bookedFrom && req.body.bookedTill) {
-      await User.updateMany(
-        {},
-        { $pull: { bookedTable: { $in: req.params.id } } }
-      );
       await User.findByIdAndUpdate(req.body.user, {
         $push: { bookedTable: req.params.id },
       });
@@ -50,6 +46,7 @@ export const updateOne = async (req, res, next) => {
           bookedFrom: "",
           bookedTill: "",
           available: true,
+          user: null,
         })
       );
     }
