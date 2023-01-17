@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import Group from "../models/Group.js";
 import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
+import Table from "../models/Table.js";
 dotenv.config();
 export const getAll = async (req, res, next) => {
   try {
@@ -48,6 +49,14 @@ export const updateOne = async (req, res, next) => {
 };
 export const deleteOne = async (req, res, next) => {
   try {
+    await Table.findOneAndUpdate(
+      { user: req.params.id },
+      {
+        bookedFrom: "",
+        bookedTill: "",
+        available: true,
+      }
+    );
     res.status(200).send(await User.findByIdAndDelete(req.params.id));
   } catch (error) {
     next({ message: error });

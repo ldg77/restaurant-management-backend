@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import User from "./User.js";
 const tableSchema = new mongoose.Schema(
   {
     name: {
@@ -20,14 +21,14 @@ const tableSchema = new mongoose.Schema(
     bookedTill: {
       type: Date,
     },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
   { timestamps: true }
 );
 
 const Table = mongoose.model("Table", tableSchema);
-
-Table.watch().on("change", (data) => {
-  console.log(data.updateDescription);
-});
 
 export default Table;
