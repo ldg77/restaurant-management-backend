@@ -49,14 +49,14 @@ export const updateOne = async (req, res, next) => {
 };
 export const deleteOne = async (req, res, next) => {
   try {
-    await Table.findOneAndUpdate(
-      { user: req.params.id },
-      {
-        bookedFrom: "",
-        bookedTill: "",
-        available: true,
-      }
-    );
+    // await Table.updateMany(
+    //   { user: req.params.id },
+    //   {
+    //     bookedFrom: "",
+    //     bookedTill: "",
+    //     available: true,
+    //   }
+    // );
     res.status(200).send(await User.findByIdAndDelete(req.params.id));
   } catch (error) {
     next({ message: error });

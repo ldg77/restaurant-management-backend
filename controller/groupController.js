@@ -1,4 +1,5 @@
 import Group from "../models/Group.js";
+import Table from "../models/Table.js";
 import User from "../models/User.js";
 
 export const getAll = async (req, res, next) => {
@@ -28,6 +29,7 @@ export const postOne = async (req, res, next) => {
 export const deleteOne = async (req, res, next) => {
   try {
     await User.deleteMany({ role: req.params.id });
+
     res.status(200).send(await Group.findByIdAndDelete(req.params.id));
   } catch (error) {
     next({ message: error });

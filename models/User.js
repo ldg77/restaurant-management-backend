@@ -41,23 +41,17 @@ const userSchema = new mongoose.Schema(
 
 const User = mongoose.model("User", userSchema, "users");
 
-const handleTables = async (id) => {
-  try {
-    const user = await User.findById(id);
-    console.log(user);
-  } catch (error) {
-    console.log(error.message);
-  }
-};
-
-User.watch().on("change", (data) => {
-  switch (data.operationType) {
-    case "delete":
-      handleTables(data.documentKey._id);
-      break;
-
-    default:
-      break;
+User.watch().on("change", async (data) => {
+  if (data.operationType === "delete") {
+    await Table.updateMany(
+      { user: data.documentKey._id },
+      {
+        bookedFrom: null,
+        bookedTill: null,
+        available: true,
+        user: null,
+      }
+    );
   }
 });
 
