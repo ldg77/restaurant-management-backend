@@ -34,21 +34,23 @@ export const updateOne = async (req, res, next) => {
       await User.findByIdAndUpdate(req.body.user, {
         $push: { bookedTable: req.params.id },
       });
-      res.status(201).send(
-        await Table.findByIdAndUpdate(req.params.id, {
+      res.status(201).send({
+        approved: true,
+        data: await Table.findByIdAndUpdate(req.params.id, {
           ...req.body,
           available: false,
-        })
-      );
+        }),
+      });
     } else {
-      res.status(201).send(
-        await Table.findByIdAndUpdate(req.params.id, {
+      res.status(201).send({
+        approved: true,
+        data: await Table.findByIdAndUpdate(req.params.id, {
           bookedFrom: "",
           bookedTill: "",
           available: true,
           user: null,
-        })
-      );
+        }),
+      });
     }
   } catch (error) {
     next({ message: error });
@@ -61,6 +63,25 @@ export const deleteOne = async (req, res, next) => {
       { $pull: { bookedTable: { $in: req.params.id } } }
     );
     res.status(201).send(await Table.findByIdAndDelete(req.params.id));
+  } catch (error) {
+    next({ message: error });
+  }
+};
+export const clearOne = async (req, res, next) => {
+  try {
+    await User.updateMany(
+      {},
+      { $pull: { bookedTable: { $in: req.params.id } } }
+    );
+    res.status(201).send({
+      approved: true,
+      data: await Table.findByIdAndUpdate(req.params.id, {
+        bookedFrom: "",
+        bookedTill: "",
+        available: true,
+        user: null,
+      }),
+    });
   } catch (error) {
     next({ message: error });
   }
