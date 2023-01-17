@@ -21,7 +21,7 @@ export const postOne = async (req, res, next) => {
     const product = await Product.create(req.body);
     res.status(201).send(
       await Product.findByIdAndUpdate(product._id, {
-        avatar: `${process.env.HOST}:${process.env.PORT}/${req.file.path}`,
+        avatar: `https://dg-rest.onrender.com/${req.file.path}`,
       })
     );
   } catch (error) {
