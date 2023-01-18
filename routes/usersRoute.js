@@ -13,11 +13,16 @@ import auth from "../middleware/auth.js";
 import checkPWD from "../middleware/checkPWD.js";
 import hashPWD from "../middleware/hashPWD.js";
 import isAdmin from "../middleware/isAdmin.js";
+import validateRequest from "../middleware/validateRequest.js";
+import { registerUser } from "../validator/userValidator.js";
 
 // set userRouter
 const userRouter = express.Router();
 // set routes in root
-userRouter.route("/").get(auth, isAdmin, getAll).post(hashPWD, postOne);
+userRouter
+  .route("/")
+  .get(auth, isAdmin, getAll)
+  .post(registerUser, validateRequest, hashPWD, postOne);
 userRouter.route("/login").post(checkPWD, loginOne);
 userRouter.route("/logout").post(auth, logout);
 userRouter.route("/checklogin").get(checklogin);

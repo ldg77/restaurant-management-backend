@@ -10,7 +10,7 @@ import auth from "../middleware/auth.js";
 import isAdmin from "../middleware/isAdmin.js";
 
 const groupRouter = express.Router();
-groupRouter.route("/").get(auth, isAdmin, getAll).post(auth, isAdmin, postOne);
+groupRouter.route("/").get(getAll).post(auth, isAdmin, postOne);
 groupRouter
   .route("/:id")
   .get(auth, isAdmin, getOne)
