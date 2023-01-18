@@ -6,6 +6,6 @@ export default async (req, res, next) => {
 
     next();
   } catch (error) {
-    next({ message: error });
+    res.status(404).send({ message: false, message: "something wrong" });
   }
 };

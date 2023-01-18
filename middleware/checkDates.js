@@ -8,6 +8,6 @@ export default (req, res, next) => {
         .send({ approved: false, message: "check please the dates" });
     }
   } catch (error) {
-    next(error);
+    res.status(404).send({ approved: false, message: error.message });
   }
 };

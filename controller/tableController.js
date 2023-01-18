@@ -4,23 +4,23 @@ export const getAll = async (req, res, next) => {
   try {
     res.status(200).send(await Table.find().populate("user"));
   } catch (error) {
-    next({ message: error });
+    res.status(404).send({ error: error });
   }
 };
 export const getOne = async (req, res, next) => {
   try {
     res.status(200).send(await Table.findById(req.params.id));
   } catch (error) {
-    next({ message: error });
+    res.status(404).send({ error: error });
   }
 };
 export const postOne = async (req, res, next) => {
   try {
     res
       .status(201)
-      .send({ message: true, table: await Table.create(req.body) });
+      .send({ approved: true, table: await Table.create(req.body) });
   } catch (error) {
-    next({ message: error });
+    res.status(404).send({ error: error.message });
   }
 };
 export const updateOne = async (req, res, next) => {
@@ -53,7 +53,7 @@ export const updateOne = async (req, res, next) => {
       });
     }
   } catch (error) {
-    next({ message: error });
+    res.status(404).send({ error: error });
   }
 };
 export const deleteOne = async (req, res, next) => {
@@ -64,7 +64,7 @@ export const deleteOne = async (req, res, next) => {
     );
     res.status(201).send(await Table.findByIdAndDelete(req.params.id));
   } catch (error) {
-    next({ message: error });
+    res.status(404).send({ error: error });
   }
 };
 export const clearOne = async (req, res, next) => {
@@ -83,6 +83,6 @@ export const clearOne = async (req, res, next) => {
       }),
     });
   } catch (error) {
-    next({ message: error });
+    res.status(404).send({ error: error });
   }
 };

@@ -5,7 +5,6 @@ import mongoose from "mongoose";
 import morgan from "morgan";
 import cors from "cors";
 import userRouter from "./routes/usersRoute.js";
-import { errorMiddleware } from "./middleware/error.js";
 import groupRouter from "./routes/groupRoute.js";
 import cookieParser from "cookie-parser";
 import productRouter from "./routes/productRoute.js";
@@ -36,8 +35,6 @@ app.use("/products", productRouter);
 app.use("/restaurants", restaurantRouter);
 app.use("/tables", tableRouter);
 
-// set mongoose
-app.use(errorMiddleware);
 mongoose.connect(URI, () => {
   console.log("DB-Connected");
   (err) => {

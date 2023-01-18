@@ -6,7 +6,7 @@ export const getAll = async (req, res, next) => {
   try {
     res.status(200).send(await Group.find({}, { __v: 0 }));
   } catch (error) {
-    next({ message: error });
+    res.status(404).send({ error: error });
   }
 };
 
@@ -14,16 +14,16 @@ export const getOne = async (req, res, next) => {
   try {
     res.status(200).send(await Group.findById(req.params.id));
   } catch (error) {
-    next({ message: error });
+    res.status(404).send({ error: error });
   }
 };
 export const postOne = async (req, res, next) => {
   try {
     res
       .status(201)
-      .send({ message: true, group: await Group.create(req.body) });
+      .send({ approved: true, group: await Group.create(req.body) });
   } catch (error) {
-    next({ message: error });
+    res.status(404).send({ error: error });
   }
 };
 export const deleteOne = async (req, res, next) => {
@@ -32,7 +32,7 @@ export const deleteOne = async (req, res, next) => {
 
     res.status(200).send(await Group.findByIdAndDelete(req.params.id));
   } catch (error) {
-    next({ message: error });
+    res.status(404).send({ error: error });
   }
 };
 export const updateOne = async (req, res, next) => {
@@ -40,8 +40,11 @@ export const updateOne = async (req, res, next) => {
     const group = await Group.findById(req.params.id);
     res
       .status(201)
-      .send(await Group.updateOne({ _id: group._id }, { ...req.body }));
+      .send({
+        approved: true,
+        data: await Group.updateOne({ _id: group._id }, { ...req.body }),
+      });
   } catch (error) {
-    next({ message: error });
+    res.status(404).send({ error: error });
   }
 };
