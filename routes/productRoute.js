@@ -7,14 +7,19 @@ import {
   postOne,
   updateOne,
 } from "../controller/productController.js";
+import auth from "../middleware/auth.js";
+import isAdmin from "../middleware/isAdmin.js";
 const upload = multer({ dest: "uploads/" });
 
 const productRouter = express.Router();
-productRouter.route("/").get(getAll).post(upload.single("avatar"), postOne);
+productRouter
+  .route("/")
+  .get(auth, isAdmin, getAll)
+  .post(upload.single("avatar"), auth, isAdmin, postOne);
 productRouter
   .route("/:id")
-  .get(getOne)
-  .patch(upload.single("avatar"), updateOne)
-  .delete(deleteOne);
+  .get(auth, isAdmin, getOne)
+  .patch(upload.single("avatar"), auth, isAdmin, updateOne)
+  .delete(auth, isAdmin, deleteOne);
 
 export default productRouter;

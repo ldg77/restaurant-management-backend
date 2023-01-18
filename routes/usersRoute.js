@@ -9,17 +9,23 @@ import {
   postOne,
   updateOne,
 } from "../controller/userController.js";
+import auth from "../middleware/auth.js";
 import checkPWD from "../middleware/checkPWD.js";
 import hashPWD from "../middleware/hashPWD.js";
+import isAdmin from "../middleware/isAdmin.js";
 
 // set userRouter
 const userRouter = express.Router();
 // set routes in root
-userRouter.route("/").get(getAll).post(hashPWD, postOne);
+userRouter.route("/").get(auth, isAdmin, getAll).post(hashPWD, postOne);
 userRouter.route("/login").post(checkPWD, loginOne);
-userRouter.route("/logout").post(logout);
+userRouter.route("/logout").post(auth, logout);
 userRouter.route("/checklogin").get(checklogin);
 // set routes on param
-userRouter.route("/:id").get(getOne).patch(updateOne).delete(deleteOne);
+userRouter
+  .route("/:id")
+  .get(auth, getOne)
+  .patch(auth, isAdmin, updateOne)
+  .delete(auth, isAdmin, deleteOne);
 
 export default userRouter;
