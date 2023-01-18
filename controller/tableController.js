@@ -20,7 +20,7 @@ export const postOne = async (req, res, next) => {
       .status(201)
       .send({ approved: true, table: await Table.create(req.body) });
   } catch (error) {
-    res.status(404).send({ error: error.message });
+    res.status(404).send({ message: "Table exist allready" });
   }
 };
 export const updateOne = async (req, res, next) => {
